@@ -7,6 +7,10 @@ const {
   getShoppingList
 } = require("./party-model");
 
+router.get("/", async (req, res) => {
+  res.send("sanity over here");
+});
+
 router.get("/parties", async (req, res) => {
   getAll()
     .then(party => {
