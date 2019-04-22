@@ -1,4 +1,12 @@
 // Update with your config settings.
+// localPgConnection = {
+//   host: "localhost",
+//   database: "hobbit",
+//   user: "Lydia",
+//   password: "pass"
+// };
+
+// const prodDbConnection = process.env.DATABASE_URL || localPgConnection;
 
 module.exports = {
   development: {
@@ -23,21 +31,16 @@ module.exports = {
   //   seeds: {
   //     directory: "./data/seeds"
   //   }
-  // }
+  // },
 
   // production: {
-  //   client: "postgresql",
-  //   connection: {
-  //     database: "my_db",
-  //     user: "username",
-  //     password: "password"
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
+  //   client: "pg",
+  //   connection: prodDbConnection, // an object or a string
   //   migrations: {
-  //     tableName: "knex_migrations"
+  //     directory: "./data/migrations"
+  //   },
+  //   seeds: {
+  //     directory: "./data/seeds"
   //   }
   // }
 };
