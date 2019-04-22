@@ -1,4 +1,12 @@
 // Update with your config settings.
+localPgConnection = {
+  host: "localhost",
+  database: "hobbit",
+  user: "Lydia",
+  password: "pass"
+};
+
+const prodDbConnection = process.env.DATABASE_URL || localPgConnection;
 
 module.exports = {
   development: {
@@ -9,35 +17,30 @@ module.exports = {
       directory: "./data/migrations"
     },
     seeds: { directory: "./data/seeds" }
+  },
+
+  testing: {
+    client: "sqlite3",
+    connection: {
+      filename: "./data/auth.test.db3"
+    },
+    useNullAsDefault: true,
+    migrations: {
+      directory: "./data/migrations"
+    },
+    seeds: {
+      directory: "./data/seeds"
+    }
+  },
+
+  production: {
+    client: "pg",
+    connection: prodDbConnection, // an object or a string
+    migrations: {
+      directory: "./data/migrations"
+    },
+    seeds: {
+      directory: "./data/seeds"
+    }
   }
-
-  // testing: {
-  //   client: "sqlite3",
-  //   connection: {
-  //     filename: "./data/auth.test.db3"
-  //   },
-  //   useNullAsDefault: true,
-  //   migrations: {
-  //     directory: "./data/migrations"
-  //   },
-  //   seeds: {
-  //     directory: "./data/seeds"
-  //   }
-  // }
-
-  // production: {
-  //   client: "postgresql",
-  //   connection: {
-  //     database: "my_db",
-  //     user: "username",
-  //     password: "password"
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: "knex_migrations"
-  //   }
-  // }
 };
