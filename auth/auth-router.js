@@ -1,33 +1,28 @@
+const router = require("express").Router();
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Users = require("./auth-model.js");
+const { find, findBy, findById, add } = require("./auth-model.js");
 const secret = process.env.JWT_SECRET;
 const { authenticate } = require("./authenticate");
 
-module.exports = server => {
-  server.post("/api/register", register);
-  server.post("/api/login", login);
-  server.get("api/protected", authenticate, getProtected);
-};
-
-function register(req, res) {
+router.post("/register", (req, res) => {
   let user = req.body;
   const hash = bcrypt.hashSync(user.password, 9);
   user.password = hash;
 
-  Users.add(user)
+  add(user)
     .then(saved => {
       res.status(201).json(saved);
     })
     .catch(error => {
       res.status(500).json({ error: "problem registering" });
     });
-}
+});
 
-function login(req, res) {
+router.post("/login", (req, res) => {
   let { username, password } = req.body;
-  Users.findBy({ username })
+  findBy({ username })
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
@@ -43,7 +38,7 @@ function login(req, res) {
     .catch(error => {
       res.status(500).json(error);
     });
-}
+});
 
 function generateToken(user) {
   const payload = {
@@ -56,7 +51,7 @@ function generateToken(user) {
   return jwt.sign(payload, secret, options);
 }
 
-function getProtected(req, res) {
+router.get("./protected", authenticate, (req, res) => {
   const requestOptions = {
     headers: { accept: "application/json" }
   };
@@ -68,4 +63,6 @@ function getProtected(req, res) {
     .catch(err => {
       res.status(500).json({ message: "error fetching protected data" });
     });
-}
+});
+
+module.exports = router;
