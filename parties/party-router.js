@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 });
 
 //PARTY
-router.get("/parties", authenticate, async (req, res) => {
+router.get("/parties", async (req, res) => {
   getAll()
     .then(party => {
       res.status(200).json(party);
@@ -77,6 +77,34 @@ router.post("/parties", authenticate, (req, res) => {
         res
           .status(500)
           .json({ err: "sorry, we could not add/start the party" });
+      });
+  }
+});
+
+router.get("/items", async (req, res) => {
+  getShoppingList()
+    .then(list => {
+      console.log(list);
+      res.status(200).json(list);
+    })
+    .catch(error => {
+      res.status(500).json({ error: "could not get list" });
+    });
+});
+
+router.post("/items/:id", (req, res) => {
+  const item = req.body;
+  if (!item) {
+    res
+      .status(404)
+      .json({ error: "please provide an item to be added to the list" });
+  } else {
+    addItem({ item })
+      .then(res => {
+        res.status(200).json({ message: "Successfully added!" });
+      })
+      .catch(error => {
+        res.status(500).json({ error: "could not add item" });
       });
   }
 });
