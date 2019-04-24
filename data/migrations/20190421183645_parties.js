@@ -21,11 +21,24 @@ exports.up = function(knex, Promise) {
         .onUpdate("CASCADE");
       tbl.string("item", 128).unique();
       tbl.boolean("completed").defaultTo(false);
+    })
+    .createTable("todoList", tbl => {
+      tbl.increments();
+      tbl
+        .integer("party_id")
+        .unsigned()
+        .references("id")
+        .inTable("parties")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
+      tbl.string("todo", 128).unique();
+      tbl.boolean("completed").defaultTo(false);
     });
 };
 
 exports.down = function(knex, Promise) {
   return knex.schema
     .dropTableIfExists("parties")
-    .dropTableIfExists("shoppingList");
+    .dropTableIfExists("shoppingList")
+    .dropTableIfExists("todoList");
 };

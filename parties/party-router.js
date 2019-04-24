@@ -1,7 +1,13 @@
 const router = require("express").Router();
 const { authenticate } = require("../auth/authenticate");
 
-const { getAll, getParty, addParty, getPartyItems } = require("./party-model");
+const {
+  getAll,
+  getParty,
+  addParty,
+  getPartyItems,
+  getPartyTodos
+} = require("./party-model");
 
 router.get("/", async (req, res) => {
   res.send("sanity over here");
@@ -20,18 +26,24 @@ router.get("/parties", async (req, res) => {
     });
 });
 
-//get individual party with shopping items
-router.get("/parties/:id", authenticate, (req, res) => {
+//get items and todos with individual party
+router.get("/parties/:id", (req, res) => {
   const { id } = req.params;
   getParty(id)
     .then(party => {
       console.log(party);
       if (party) {
-        return getPartyItems(id).then(items => {
-          party.items = items;
-          console.log(party);
-          return res.status(200).json({ party });
-        });
+        return getPartyItems(id)
+          .then(items => {
+            party.items = items;
+          })
+          .then(
+            getPartyTodos(id).then(todos => {
+              party.todos = todos;
+              console.log(party);
+              return res.status(200).json({ party });
+            })
+          );
       } else {
         res.status(404).json({ error: "please provide project id" });
       }
@@ -43,7 +55,7 @@ router.get("/parties/:id", authenticate, (req, res) => {
 
 //add a party
 
-router.post("/parties", authenticate, (req, res) => {
+router.post("/parties", (req, res) => {
   const party = req.body;
   console.log(party);
   if (!party.theme || !party.date || !party.budget || !party.guestCount) {

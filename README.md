@@ -1,5 +1,6 @@
 # bw-april-SG2--partyPlanner-BE
 
+
 | Authentication Endpoints                                                    |  Inputs and responses                   | 
 |-----------------------------------------------------------------------------|:---------------------------------------:|
 |https://party-planner-build-week.herokuapp.com/api/register                  |                                         | 
