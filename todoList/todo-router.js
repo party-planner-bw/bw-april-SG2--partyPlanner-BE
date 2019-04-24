@@ -11,7 +11,7 @@ const {
 
 //ITEMS SHOPPING LIST
 //get items
-router.get("/todos", async (req, res) => {
+router.get("/todos", authenticate, async (req, res) => {
   getTodoList()
     .then(todo => {
       console.log(todo);
@@ -23,7 +23,7 @@ router.get("/todos", async (req, res) => {
 });
 
 //add items
-router.post("/todos", (req, res) => {
+router.post("/todos", authenticate, (req, res) => {
   const todo = req.body;
   const id = req.params.id;
   console.log(todo);
@@ -43,7 +43,7 @@ router.post("/todos", (req, res) => {
 });
 
 //get items by id
-router.get("/todos/:id", (req, res) => {
+router.get("/todos/:id", authenticate, (req, res) => {
   const { id } = req.params;
   getTodoById(id)
     .then(todo => {
@@ -55,7 +55,7 @@ router.get("/todos/:id", (req, res) => {
 });
 
 //Delete item by id
-router.delete("/todos/:id", (req, res) => {
+router.delete("/todos/:id", authenticate, (req, res) => {
   const id = req.params.id;
   deleteTodo(id)
     .then(body => {
@@ -68,7 +68,7 @@ router.delete("/todos/:id", (req, res) => {
 });
 
 //update item
-router.put("/todos/:id", (req, res) => {
+router.put("/todos/:id", authenticate, (req, res) => {
   const id = req.params.id;
   const body = req.body;
   editTodo(id, body)
