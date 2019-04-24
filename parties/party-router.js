@@ -47,20 +47,23 @@ router.get("/parties", async (req, res) => {
 //     });
 // });
 //trying to get items and todos in one place
-router.get("/parties/:id", authenticate, (req, res) => {
+router.get("/parties/:id", (req, res) => {
   const { id } = req.params;
   getParty(id)
     .then(party => {
       console.log(party);
       if (party) {
-        getPartyItems(id).then(items => {
-          party.items = items;
-          getPartyTodos(id).then(todos => {
-            party.todos = todos;
-          });
-          console.log(party);
-          return res.status(200).json({ party });
-        });
+        return getPartyItems(id)
+          .then(items => {
+            party.items = items;
+          })
+          .then(
+            getPartyTodos(id).then(todos => {
+              party.todos = todos;
+              console.log(party);
+              return res.status(200).json({ party });
+            })
+          );
       } else {
         res.status(404).json({ error: "please provide project id" });
       }
