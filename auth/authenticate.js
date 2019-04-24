@@ -21,7 +21,7 @@ function authenticate(req, res, next) {
     });
   } else {
     return res.status(401).json({
-      error: "No token provided"
+      error: "You do not have access to these parties."
     });
   }
 }

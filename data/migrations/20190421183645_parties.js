@@ -15,7 +15,6 @@ exports.up = function(knex, Promise) {
       tbl
         .integer("party_id")
         .unsigned()
-        .notNullable()
         .references("id")
         .inTable("parties")
         .onDelete("CASCADE")

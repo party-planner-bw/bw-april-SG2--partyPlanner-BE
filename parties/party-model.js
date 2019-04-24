@@ -4,7 +4,7 @@ module.exports = {
   getAll,
   getParty,
   addParty,
-  getShoppingList
+  getPartyItems
 };
 
 function getAll() {
@@ -17,10 +17,10 @@ function getParty(id) {
     .first();
 }
 
-function addParty() {
+function addParty(party) {
   return db("parties").insert(party);
 }
 
-function getShoppingList() {
-  return db("shoppingList");
+function getPartyItems(id) {
+  return db("shoppingList").where({ party_id: id });
 }
