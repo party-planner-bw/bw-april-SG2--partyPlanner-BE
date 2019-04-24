@@ -1,7 +1,13 @@
 const router = require("express").Router();
 const { authenticate } = require("../auth/authenticate");
 
-const { getAll, getParty, addParty, getPartyItems } = require("./party-model");
+const {
+  getAll,
+  getParty,
+  addParty,
+  getPartyItems,
+  getPartyTodos
+} = require("./party-model");
 
 router.get("/", async (req, res) => {
   res.send("sanity over here");
@@ -21,14 +27,37 @@ router.get("/parties", async (req, res) => {
 });
 
 //get individual party with shopping items
+// router.get("/parties/:id", authenticate, (req, res) => {
+//   const { id } = req.params;
+//   getParty(id)
+//     .then(party => {
+//       console.log(party);
+//       if (party) {
+//         return getPartyItems(id).then(items => {
+//           party.items = items;
+//           console.log(party);
+//           return res.status(200).json({ party });
+//         });
+//       } else {
+//         res.status(404).json({ error: "please provide project id" });
+//       }
+//     })
+//     .catch(error => {
+//       res.status(500).json({ error: "Could not get party items" });
+//     });
+// });
+//trying to get items and todos in one place
 router.get("/parties/:id", authenticate, (req, res) => {
   const { id } = req.params;
   getParty(id)
     .then(party => {
       console.log(party);
       if (party) {
-        return getPartyItems(id).then(items => {
+        getPartyItems(id).then(items => {
           party.items = items;
+          getPartyTodos(id).then(todos => {
+            party.todos = todos;
+          });
           console.log(party);
           return res.status(200).json({ party });
         });
