@@ -4,8 +4,6 @@ module.exports = {
   getAll,
   getParty,
   addParty,
-  getShoppingList,
-  addItem,
   getPartyItems
 };
 
@@ -21,14 +19,6 @@ function getParty(id) {
 
 function addParty(party) {
   return db("parties").insert(party);
-}
-
-function getShoppingList() {
-  return db("shoppingList");
-}
-
-function addItem(item) {
-  return db("shoppingList").insert(item);
 }
 
 function getPartyItems(id) {
