@@ -5,9 +5,9 @@ const request = require("supertest");
 
 describe("party model", () => {
   describe("insert", () => {
-    afterEach(async () => {
-      await db("parties").truncate();
-    });
+    // afterEach(async () => {
+    //   await db("parties").truncate();
+    // });
     it("insert party into database", async () => {
       await partydb.addParty({
         theme: "swimming",
